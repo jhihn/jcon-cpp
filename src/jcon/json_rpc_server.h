@@ -3,8 +3,8 @@
 #include "jcon.h"
 #include "json_rpc_logger.h"
 
-//#include <QAbstractSocket>
-#include <QHostAddress>
+#include <QAbstractSocket>
+
 #include <memory>
 
 namespace jcon {
