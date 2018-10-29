@@ -158,11 +158,13 @@ QByteArray JsonRpcEndpoint::processBuffer(const QByteArray& buffer,
                 JCON_ASSERT(brace_nesting_level >= 0);
 
                 if (brace_nesting_level == 0) {
-                    auto doc = QJsonDocument::fromJson(buf.left(i));
-                    JCON_ASSERT(!doc.isNull());
-                    JCON_ASSERT(doc.isObject());
+                    QJsonParseError pe;
+                    auto doc = QJsonDocument::fromJson(buf.left(i), &pe);
                     if (doc.isObject())
                         emit jsonObjectReceived(doc.object(), socket);
+                    else {
+                        qWarning() << Q_FUNC_INFO << "QJsonParseError" << pe.errorString();
+                    }
                     buf = chopLeft(buf, i);
                     i = 0;
                     continue;
